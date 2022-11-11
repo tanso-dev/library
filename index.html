@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library.io</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/ce2594e773.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="nav">
+        <div class="logo">
+            Library.io
+        </div>
+        <button id="login-btn">Log In</button>
+    </div>
+    <div class="main">
+        <!-- The Modal -->
+        <div id="bookModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                
+                <span class="close">&times;</span>
+                
+                <div class="modal-body">
+                    <h2>New Book</h2>
+                    <br>
+                    <form id="book-form">
+                        <label for="title">Book Title</label><br>
+                        <input type="text" id="title" name="title" placeholder="The Hobbit"><br><br>
+                        <label for="fname">Author First Name</label><br>
+                        <input type="text" id="fname" name="fname" placeholder="J.R."><br>
+                        <label for="lname">Author Last Name</label><br>
+                        <input type="text" id="lname" name="lname" placeholder="Tolkien"><br><br>
+                        
+
+                        <label for="pagecount">Page Count</label><br>
+                        <input type="number" id="pagecount" name="pagecount" placeholder="333"><br><br>
+
+                        <input type="checkbox" id="markread" name="markread" value="read" >
+                        <label for="markread"> Mark as Read</label><br>
+                        <input type="checkbox" id="markfavorite" name="markfavorite" value="favorite" >
+                        <label for="markfavorite"> Mark as Favorite</label><br><br>
+
+                        <input id="addBookSubmit" type="submit" value="Add Book">
+                    </form> 
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="ui-dash">
+            <button id="add-btn"><i class="fa-solid fa-plus"></i>Add Book</button>
+            <div class="other-actions">
+                <button id="toggle-btn"><i class="fa-solid fa-list"></i>Toggle View</button>
+                <button id="export-btn"><i class="fa-solid fa-file-export"></i>Export</button>
+            </div>
+            
+        </div>
+        <h1>Your Library</h1>
+        <!-- <p class="library-alert">No books are in your library. Hit the "+ Add Book" button above to add to your list.</p> -->
+        <div class="book-container">
+        </div>
+    </div>
+    <footer>Made by <strong>Elixir Studio</strong></footer>
+    <script src="scripts.js"></script>
+</body>
+</html>
