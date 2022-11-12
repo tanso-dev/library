@@ -19,13 +19,13 @@ function toggleFavoriteBook(e){
 
   //changes icon type and toggles 'favorite' class in the favoriteDiv
   if(favoriteDiv.classList.contains('favorite')){
-    //if it's a favorite
+    //enters if it's currently set as a favorite
     favoriteDiv.classList.remove('favorite');
     fIcon.classList.remove("fa-solid");
     fIcon.classList.add("fa-regular");
   }
   else{
-    //if it's not a favorite
+    //enters if it's not currently set as a favorite
     favoriteDiv.classList.add('favorite');
     fIcon.classList.remove("fa-regular");
     fIcon.classList.add("fa-solid");
@@ -45,12 +45,12 @@ function toggleReadBook(e){
 
   //toggles 'read' class on btn and changes text depending on state
   if (readBtn.classList.contains("read")){
-    //if it's read
+    //enters if it's currently set read
     readBtn.classList.remove("read");
     readBtn.innerText = "Unread";
   }
   else{
-    //if it's not read
+    //enters if it isn't currently set read
     readBtn.classList.add("read");
     readBtn.innerText = "Read";
   }
@@ -67,7 +67,7 @@ function deleteBook(e){
   document.getElementById(uId).remove();
 }
 function createBook(book){
-  //creates the book div
+  //creates <div> for the the book
   const bookDiv = document.createElement('div');
   bookDiv.classList.add("book");
 
@@ -78,12 +78,12 @@ function createBook(book){
 
 
   /////DELETE BUTTON/////
-  //create delete area
+  //creates <span> for the delete area
   const bookDel = document.createElement('span');
   bookDel.classList.add("book_delete");
   bookDel.setAttribute('data-book', Number(bookDiv.id));
 
-  //create delete icon
+  //creates <i> for the delete icon
   const bookDelIcon = document.createElement('i');
   bookDelIcon.classList.add("account-icon");
   bookDelIcon.classList.add("fa-solid");
@@ -99,7 +99,7 @@ function createBook(book){
 
 
   /////FAVORITE BUTTON/////
-  //create favorites areas
+  //creates <span> for the favorites area
   const bookFav = document.createElement('span');
   bookFav.classList.add("book_favorite");
   bookFav.setAttribute('data-book', Number(bookDiv.id));
@@ -110,19 +110,19 @@ function createBook(book){
     
   }
 
-  //create favorites icon
+  //create <icon> for favorites icon
   const bookFavIcon = document.createElement('i');
   bookFavIcon.classList.add("account-icon");
   bookFavIcon.classList.add("fa-heart");
 
   //adds the correct font-awesome icon type depending on whether it's chosen as a favorite on submission
   if (book.isFavorite){
-    //favorite
+    //enters if it's a favorite
     bookFavIcon.classList.add("fa-solid");
     
   }
   else{
-    //not favorite
+    //enters if it's not a favorite
     bookFavIcon.classList.add("fa-regular");
   }
   
@@ -135,17 +135,17 @@ function createBook(book){
   bookDiv.appendChild(bookFav);
 
   //BOOK COVER////////////////
-  //create book cover
+  //creates <div> for book cover
   const bookCover = document.createElement("div");
   bookCover.classList.add('book_cover');
 
-  //title
+  //creates <p> for title
   const bookTitle = document.createElement("p");
   bookTitle.classList.add("book_title");
   bookTitle.innerText = book.title;
   bookCover.appendChild(bookTitle);
 
-  //author
+  //creates <p> for author
   const bookAuthor = document.createElement("p");
   bookAuthor.classList.add("book_author");
   bookAuthor.innerText = book.authorFirstName + " " + book.authorLastName;
@@ -155,26 +155,31 @@ function createBook(book){
   bookDiv.appendChild(bookCover);
 
   //BOOK INFO//////////////////
+  //creates <div> for the book info
   const bookInfo = document.createElement("div");
   bookInfo.classList.add("book_info");
 
   //book pages
+  //create <p> for book pages
   const bookPages = document.createElement("p");
   bookPages.classList.add("book_pages");
   bookPages.innerText = book.pageCount + " pgs.";
   bookInfo.appendChild(bookPages);
 
   //read button
+  //create <button> for the "Read/Unread" button
   const bookReadBtn = document.createElement("button");
   bookReadBtn.value = bookDiv.id;
   bookReadBtn.classList.add("book_read");
 
   //adds class if chosen as "read" on submission
   if (book.hasRead){
+    //enters if "Mark as Read" is checked
     bookReadBtn.classList.add("read");
     bookReadBtn.innerText = "Read";
   }
   else{
+    //enters if "Mark as Read" is not checked
     bookReadBtn.innerText = "Unread";
   }
 
@@ -205,26 +210,31 @@ function Book(title, firstName, lastName, pages, read, favorite){
 Book.prototype.displayInfo = function() {
   console.log(`${this.title} by ${this.authorFirstName} ${this.authorLastName} is ${this.pageCount} pages long. `);
   
-  if (this.isFavorite){
+  if (this.hasRead){
+    //enters if it has been read
     console.log("I have read it.");
   }
-  if (this.hasRead){
+  if (this.isFavorite){
+    //enters if it's a favorite book
     console.log("It is one of my favorite books.")
   }
 }
 
 Book.prototype.addBookToLibrary = function(){
-  //adds to the data
+  //adds the book to the user's library
   myLibrary.push(this);
+  //adds the book to the DOM
   createBook(this);
 }
 
 Book.prototype.toggleRead = function(){
   //toggles the .hasRead property within the object
   if (this.hasRead){
+    //enters if it has been read, switch to false
     this.hasRead = false;
   }
   else{
+    //enters if it hasn't been read, switches to true
     this.hasRead = true;
   }
 }
@@ -232,9 +242,11 @@ Book.prototype.toggleRead = function(){
 Book.prototype.toggleFavorite = function(){
   //toggles the .isFavorite porperty within the object
   if (this.isFavorite){
+    //enters if it is a favorite, switches to false
     this.isFavorite = false;
   }
   else{
+    //enters if it is not a favorite, switches to true
     this.isFavorite = true;
   }
 }
