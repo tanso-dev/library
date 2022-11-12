@@ -4,22 +4,28 @@ let id = 0;
 let bookContainer = document.querySelector('.book-container');
 
 function toggleFavoriteBook(e){
+  //sets div
   let favoriteDiv = e.currentTarget;
+  //grabs icon
   let fIcon = favoriteDiv.querySelector("i");
 
+  //grabs book id based off of div's data-book
   let bookId = favoriteDiv.dataset.book;
+  //grabs the index of the book in the library based off its ID 
   let book =  myLibrary.map(item => item.id).indexOf(Number(bookId));
 
-  //toggle favorite book function in the Book object
+  //toggle favorite book function in the Book object usings its ID
   myLibrary[book].toggleFavorite();
 
   //changes icon type and toggles 'favorite' class in the favoriteDiv
   if(favoriteDiv.classList.contains('favorite')){
+    //if it's a favorite
     favoriteDiv.classList.remove('favorite');
     fIcon.classList.remove("fa-solid");
     fIcon.classList.add("fa-regular");
   }
   else{
+    //if it's not a favorite
     favoriteDiv.classList.add('favorite');
     fIcon.classList.remove("fa-regular");
     fIcon.classList.add("fa-solid");
@@ -27,8 +33,11 @@ function toggleFavoriteBook(e){
 }
 
 function toggleReadBook(e){
+  //grabs button
   let readBtn = e.currentTarget;
+  //grabs value of button (the book ID)
   let bookId = readBtn.value;
+  //looks for the book's id in the array and return its index
   let book =  myLibrary.map(item => item.id).indexOf(Number(bookId));
   //toggle read book function in the Book object
   myLibrary[book].toggleRead();
@@ -36,30 +45,37 @@ function toggleReadBook(e){
 
   //toggles 'read' class on btn and changes text depending on state
   if (readBtn.classList.contains("read")){
+    //if it's read
     readBtn.classList.remove("read");
     readBtn.innerText = "Unread";
   }
   else{
+    //if it's not read
     readBtn.classList.add("read");
     readBtn.innerText = "Read";
   }
 }
 
 function deleteBook(e){
+  //grabs id of the book
   let uId = e.currentTarget.dataset.book;
 
-  //removes from data library
+  //filters to only include the book id
   myLibrary = myLibrary.filter(book => book.id != uId);
 
   //removes from DOM
   document.getElementById(uId).remove();
 }
 function createBook(book){
+  //creates the book div
   const bookDiv = document.createElement('div');
-  bookDiv.id = String(id);
-  id++;
   bookDiv.classList.add("book");
-  
+
+  //sets id
+  bookDiv.id = String(id);
+  //increases the counter
+  id++;
+
 
   /////DELETE BUTTON/////
   //create delete area
@@ -72,37 +88,45 @@ function createBook(book){
   bookDelIcon.classList.add("account-icon");
   bookDelIcon.classList.add("fa-solid");
   bookDelIcon.classList.add("fa-trash-can");
-
-  bookDel.addEventListener('click', deleteBook);
-
   //appends book icon to favorite div
   bookDel.appendChild(bookDelIcon);
+
+  //creates click event for the delete area
+  bookDel.addEventListener('click', deleteBook);
+
   //appends favorite div to book div
   bookDiv.appendChild(bookDel);
+
 
   /////FAVORITE BUTTON/////
   //create favorites areas
   const bookFav = document.createElement('span');
   bookFav.classList.add("book_favorite");
+  bookFav.setAttribute('data-book', Number(bookDiv.id));
+
+  //adds the favorite class if it's chosen on submission
   if (book.isFavorite){
     bookFav.classList.add("favorite");
     
   }
-  bookFav.setAttribute('data-book', Number(bookDiv.id));
 
   //create favorites icon
   const bookFavIcon = document.createElement('i');
   bookFavIcon.classList.add("account-icon");
-  console.log(book.isFavorite);
+  bookFavIcon.classList.add("fa-heart");
+
+  //adds the correct font-awesome icon type depending on whether it's chosen as a favorite on submission
   if (book.isFavorite){
+    //favorite
     bookFavIcon.classList.add("fa-solid");
     
   }
   else{
+    //not favorite
     bookFavIcon.classList.add("fa-regular");
   }
-  bookFavIcon.classList.add("fa-heart");
-
+  
+  //adds the click event to the favorite area
   bookFav.addEventListener('click', toggleFavoriteBook);
 
   //appends book icon to favorite div
@@ -110,17 +134,18 @@ function createBook(book){
   //appends favorite div to book div
   bookDiv.appendChild(bookFav);
 
+  //BOOK COVER////////////////
   //create book cover
   const bookCover = document.createElement("div");
   bookCover.classList.add('book_cover');
 
-  //create title p
+  //title
   const bookTitle = document.createElement("p");
   bookTitle.classList.add("book_title");
   bookTitle.innerText = book.title;
   bookCover.appendChild(bookTitle);
 
-  //create author p
+  //author
   const bookAuthor = document.createElement("p");
   bookAuthor.classList.add("book_author");
   bookAuthor.innerText = book.authorFirstName + " " + book.authorLastName;
@@ -129,20 +154,22 @@ function createBook(book){
   //appends book cover to book div
   bookDiv.appendChild(bookCover);
 
-  //BOOK INFO
+  //BOOK INFO//////////////////
   const bookInfo = document.createElement("div");
   bookInfo.classList.add("book_info");
 
-  //create p for book pages
+  //book pages
   const bookPages = document.createElement("p");
   bookPages.classList.add("book_pages");
   bookPages.innerText = book.pageCount + " pgs.";
   bookInfo.appendChild(bookPages);
 
-  //create button for read
+  //read button
   const bookReadBtn = document.createElement("button");
   bookReadBtn.value = bookDiv.id;
   bookReadBtn.classList.add("book_read");
+
+  //adds class if chosen as "read" on submission
   if (book.hasRead){
     bookReadBtn.classList.add("read");
     bookReadBtn.innerText = "Read";
@@ -151,7 +178,10 @@ function createBook(book){
     bookReadBtn.innerText = "Unread";
   }
 
+  //adds event listener to toggle read status
   bookReadBtn.addEventListener('click', toggleReadBook);
+
+  //appends button to info area
   bookInfo.appendChild(bookReadBtn);
 
   //apends book info to book div
@@ -189,23 +219,18 @@ Book.prototype.addBookToLibrary = function(){
   createBook(this);
 }
 
-Book.prototype.removeBookFromLibrary = function(){
-  //adds to the data
-  myLibrary.push(this);
-}
-
 Book.prototype.toggleRead = function(){
+  //toggles the .hasRead property within the object
   if (this.hasRead){
     this.hasRead = false;
   }
   else{
     this.hasRead = true;
   }
-  console.log(this);
 }
 
 Book.prototype.toggleFavorite = function(){
-  //toggles favorite
+  //toggles the .isFavorite porperty within the object
   if (this.isFavorite){
     this.isFavorite = false;
   }
@@ -219,16 +244,20 @@ Book.prototype.toggleFavorite = function(){
 
 /*BUTTONS***********************************************/
 function addBook(){
-    addModal.style.display = "block";
+  //opens up modal to add a new book
+  addModal.style.display = "block";
 }
 function toggleView(){
-    console.log("Toggle View.");
+  //currently not working
+  console.log("Toggle View.");
 }
 function exportBooks(){
-    console.log("Export.");
+  //currently not working
+  console.log("Export.");
 }
 function signInUser(){
-    console.log("Login.")
+  //currently not working
+  console.log("Login.")
 }
 //grabs buttons
 const loginBtn = document.querySelector('#login-btn');
@@ -236,6 +265,7 @@ const addBtn = document.querySelector('#add-btn');
 const toggleBtn = document.querySelector('#toggle-btn');
 const exportBtn = document.querySelector('#export-btn');
 
+//assigns button clicks
 loginBtn.addEventListener('click',signInUser);
 addBtn.addEventListener('click', addBook);
 toggleBtn.addEventListener('click', toggleView);
@@ -251,6 +281,7 @@ exportBtn.addEventListener('click',exportBooks);
 //grabs modal for new book
 const addModal = document.getElementById("bookModal");
 
+//grabs <inputs> from the modal
 const bookInputs = addModal.querySelectorAll('input');
 
 // Get the <span> element that closes the modal
@@ -272,27 +303,26 @@ function callbackFunction(event){
   //prevents form from submitting anywhere
   event.preventDefault();
 
+  //creates the form data
   const myFormData = new FormData(event.target);
   
   const bookData = {
+    //defaults the favorite and read to false
     "markfavorite": false,
     "markread": false
   };
 
-//clears all values from the modal
-function clearBookModal(){
-  bookInputs[0].value = ""
-  bookInputs[1].value = ""
-  bookInputs[2].value = ""
-  bookInputs[3].value = ""
-  bookInputs[4].checked = false
-  bookInputs[5].checked = false
-}
+  //clears all values from the modal
+  function clearBookModal(){
+    bookInputs[0].value = ""
+    bookInputs[1].value = ""
+    bookInputs[2].value = ""
+    bookInputs[3].value = ""
+    bookInputs[4].checked = false
+    bookInputs[5].checked = false
+  }
 
-
-
-
-  //converts the form data into 
+  //converts the form data into a dictionary
   myFormData.forEach((value, key) => (bookData[key] = value));
   
   //corrects to true if a user checks the boxes
@@ -317,6 +347,7 @@ function clearBookModal(){
 
 
 }
+
 // Get the submit button from the Addition modal
 const bookForm = document.getElementById('book-form');
 bookForm.addEventListener('submit',callbackFunction);
