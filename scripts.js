@@ -196,58 +196,57 @@ function createBook(book){
   bookContainer.appendChild(bookDiv);
 }
 
-/*OBJECTS**********************************************/
-function Book(title, firstName, lastName, pages, read, favorite){
-  this.id = id;
-  this.title = title
-  this.authorFirstName = firstName
-  this.authorLastName = lastName
-  this.pageCount = pages
-  this.hasRead = read
-  this.isFavorite = favorite
-}
-
-Book.prototype.displayInfo = function() {
-  console.log(`${this.title} by ${this.authorFirstName} ${this.authorLastName} is ${this.pageCount} pages long. `);
+class Book{
+  constructor(title, firstName, lastName, pages, read, favorite){
+    this.id = id
+    this.title = title
+    this.authorFirstName = firstName
+    this.authorLastName = lastName
+    this.pageCount = pages
+    this.hasRead = read
+    this.isFavorite = favorite
+  }
+  displayInfo(){
+    console.log(`${this.title} by ${this.authorFirstName} ${this.authorLastName} is ${this.pageCount} pages long. `);
   
-  if (this.hasRead){
-    //enters if it has been read
-    console.log("I have read it.");
+    if (this.hasRead){
+      //enters if it has been read
+      console.log("I have read it.");
+    }
+    if (this.isFavorite){
+      //enters if it's a favorite book
+      console.log("It is one of my favorite books.")
+    }
   }
-  if (this.isFavorite){
-    //enters if it's a favorite book
-    console.log("It is one of my favorite books.")
+  addBookToLibrary(){
+      //adds the book to the user's library
+    myLibrary.push(this);
+    //adds the book to the DOM
+    createBook(this);
   }
-}
 
-Book.prototype.addBookToLibrary = function(){
-  //adds the book to the user's library
-  myLibrary.push(this);
-  //adds the book to the DOM
-  createBook(this);
-}
+  toggleRead(){
+    //toggles the .hasRead property within the object
+    if (this.hasRead){
+      //enters if it has been read, switch to false
+      this.hasRead = false;
+    }
+    else{
+      //enters if it hasn't been read, switches to true
+      this.hasRead = true;
+    }
+  }
 
-Book.prototype.toggleRead = function(){
-  //toggles the .hasRead property within the object
-  if (this.hasRead){
-    //enters if it has been read, switch to false
-    this.hasRead = false;
-  }
-  else{
-    //enters if it hasn't been read, switches to true
-    this.hasRead = true;
-  }
-}
-
-Book.prototype.toggleFavorite = function(){
-  //toggles the .isFavorite porperty within the object
-  if (this.isFavorite){
-    //enters if it is a favorite, switches to false
-    this.isFavorite = false;
-  }
-  else{
-    //enters if it is not a favorite, switches to true
-    this.isFavorite = true;
+  toggleFavorite(){
+    //toggles the .isFavorite porperty within the object
+    if (this.isFavorite){
+      //enters if it is a favorite, switches to false
+      this.isFavorite = false;
+    }
+    else{
+      //enters if it is not a favorite, switches to true
+      this.isFavorite = true;
+    }
   }
 }
 
